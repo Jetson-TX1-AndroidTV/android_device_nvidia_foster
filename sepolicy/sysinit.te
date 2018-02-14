@@ -1,0 +1,12 @@
+# Allow Lineage SMB Server iptable forwarding
+allow sysinit default_prop:property_service set;
+allow sysinit proc_net:file { getattr write };
+allow sysinit self:capability net_admin;
+allow sysinit self:rawip_socket create;
+allow sysinit self:udp_socket create;
+allow sysinit usermodehelper:file read;
+allow sysinit proc_net:file open;
+allow sysinit self:capability net_raw;
+allow sysinit dnsproxyd_socket:sock_file write;
+allow sysinit self:rawip_socket getopt;
+allow sysinit self:rawip_socket setopt;

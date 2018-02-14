@@ -18,12 +18,31 @@ PRODUCT_CHARACTERISTICS := tv
 TARGET_TEGRA_VERSION := t210
 TARGET_TEGRA_TOUCH := raydium
 
+# Overlay
+DEVICE_PACKAGE_OVERLAYS += \
+    device/nvidia/foster/overlay
+
 $(call inherit-product, device/nvidia/shield-common/shield.mk)
 
-PRODUCT_AAPT_CONFIG += xlarge large
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+# Include drawables for various densities.
+PRODUCT_AAPT_CONFIG := normal large xlarge tvdpi hdpi xhdpi xxhdpi
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
+
+# Boot Animation
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bootanimation.zip:system/media/bootanimation.zip
+
+# Iptables script for LineageSMB
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/iptables/iptables-service.sh:system/bin/iptables-service.sh \
+    $(LOCAL_PATH)/iptables/80iptables:system/etc/init.d/80iptables
+   
+## Install GMS if available
+$(call inherit-product-if-exists, 3rdparty/google/gms-apps/tv/gms.mk)
+PRODUCT_PROPERTY_OVERRIDES += \
+        ro.com.google.clientidbase=android-nvidia
 
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk)
@@ -31,10 +50,6 @@ $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk
 $(call inherit-product, vendor/nvidia/shield/foster.mk)
 
 PRODUCT_SYSTEM_PROPERTY_BLACKLIST := ro.product.name
-
-# Overlay
-DEVICE_PACKAGE_OVERLAYS += \
-    device/nvidia/foster/overlay
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -85,6 +100,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/permissions/com.nvidia.feature.opengl4.xml:system/etc/permissions/com.nvidia.feature.opengl4.xml \
     $(LOCAL_PATH)/permissions/com.nvidia.nvsi.xml:system/etc/permissions/com.nvidia.nvsi.xml
 
+# Define Netflix nrdp properties 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/permissions/nrdp.modelgroup.xml:system/etc/permissions/nrdp.modelgroup.xml
 
 # Media config
 PRODUCT_COPY_FILES += \
@@ -116,6 +134,14 @@ PRODUCT_COPY_FILES += \
 # Light
 PRODUCT_PACKAGES += \
     lights.tegra
+
+# Leanback Customizer
+PRODUCT_PACKAGES += \
+    LeanbackCustomize
+
+# USB Tuner support
+PRODUCT_PACKAGES += \
+    usbtuner-tvinput
 
 # Charger
 PRODUCT_PACKAGES += \

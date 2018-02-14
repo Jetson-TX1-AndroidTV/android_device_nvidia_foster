@@ -1,0 +1,6 @@
+#!/system/bin/sh
+# call iptables-service.sh if present in /system/bin
+   log -p i -t iptables-init "Executing iptables-service.sh";
+   /system/bin/sh /system/bin/iptables-service.sh start;
+   setprop cm.iptables.active 1;
+fi;

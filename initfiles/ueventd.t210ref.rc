@@ -346,4 +346,4 @@ subsystem video4linux
 /sys/devices/virtual/misc/uhid/0005:0955:7213*	timeout	0660	system	system
 
 #Change dvb node owner&group
-/dev/dvb*	0660	system	net_bind_service
+/dev/dvb*       0660    system  net_bind_service
